@@ -1,0 +1,6 @@
+.git
+*.un~
+*.swp
+node_modules
+docker-compose.yml
+Dockerfile
