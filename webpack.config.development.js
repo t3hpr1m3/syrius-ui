@@ -21,11 +21,11 @@ var config = [
   {
     entry: [
       'babel-polyfill',
-      path.join(__dirname, 'src/server/index.js')
+      path.join(__dirname, 'src/server/index')
     ],
     output: {
-      path: path.join(__dirname, 'dist'),
-      filename: 'server.js',
+      path: path.join(__dirname, 'dist', 'server'),
+      filename: 'app.js',
       libraryTarget: 'commonjs2'
     },
     devtool: '#cheap-module-source-map',
@@ -61,14 +61,15 @@ var config = [
       ]
     },
     output: {
-      path: path.join(__dirname, 'dist', 'public'),
+      path: path.join(__dirname, 'dist', 'client'),
+      publicPath: '/assets/',
       filename: '[name].js'
     },
     devtool: '#cheap-module-source-map',
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify('production')
+          'NODE_ENV': JSON.stringify('development')
         }
       }),
       new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
@@ -76,16 +77,9 @@ var config = [
     module: {
       loaders: [
         {
-          test: /\.jsx?$/,
+          test: /\.js$/,
           exclude: /node_modules/,
-          loader: 'babel-loader'
-        },
-        { 
-          test: /\.ico$/,
-          loader: 'file',
-          query: {
-            name: '[name].[ext]'
-          }
+          loader: 'babel'
         }
       ]
     }

@@ -4,13 +4,13 @@ var config = require('config'),
     path = require('path'),
     webpack = require('webpack');
 
+var serverDistPath = '../dist/server/app.js';
+
+// Shamelessly borrowed from http://www.reactjunkie.com/universal-hot-reload/
 function watchServerChanges() {
   var httpServerObject = null;
   var compiler = webpack(require('../webpack.config'));
-  var compilerOptions = {
-    aggregateTimeout: 300,
-    poll: true
-  };
+  var compilerOptions = {};
 
   compiler.watch(compilerOptions, function onServerChange(err, stats) {
     if (err) {
@@ -39,7 +39,7 @@ function watchServerChanges() {
 function clearCache() {
   var cacheIds = Object.keys(require.cache);
   for (var i = 0; i < cacheIds.length; i++) {
-    if (cacheIds[i] === path.resolve(__dirname, '../dist/server.js')) {
+    if (cacheIds[i] === path.resolve(__dirname, serverDistPath)) {
       delete require.cache[cacheIds[i]];
       return;
     }
@@ -47,7 +47,7 @@ function clearCache() {
 }
 
 function initHttpServer() {
-  var httpServer = require('../dist/server').server;
+  var httpServer = require(serverDistPath).server;
   var sockets = {};
 
   var nextSocketId = 0;

@@ -6,14 +6,15 @@ import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import routes from '../routes'
+import routes from '../shared/routes'
 
 export const app = express()
 
-app.set('views', path.resolve(__dirname, '../views'))
+app.set('views', path.resolve(__dirname, 'views'))
 app.set('view engine', 'pug')
 
-app.use('/assets', express.static(path.resolve(__dirname, '../../dist/public')))
+app.use(express.static(path.resolve(__dirname, '../../static')));
+app.use('/assets', express.static(path.resolve(__dirname, '../../dist/client')))
 
 app.get('*', (req, res) => {
   match(
@@ -25,6 +26,10 @@ app.get('*', (req, res) => {
 
       let markup;
       if (renderProps) {
+        let status = renderProps.routes[renderProps.routes.length - 1].status;
+        if (status === 404) {
+          res.status(404);
+        }
         markup = renderToString(<RouterContext {...renderProps} />)
       } else {
         markup = renderToString(<NotFoundPage />)

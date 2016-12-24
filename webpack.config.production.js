@@ -24,8 +24,8 @@ exports = module.exports = [
       path.join(__dirname, 'src/server/index')
     ],
     output: {
-      path: path.join(__dirname, 'dist'),
-      filename: 'server.js'
+      path: path.join(__dirname, 'dist', 'server'),
+      filename: 'app.js'
     },
     devtool: false,
     target: 'node',
@@ -51,9 +51,8 @@ exports = module.exports = [
     }
   },
   {
-    devtool: false,
     entry: {
-      app: [path.resolve(__dirname, 'src/client/index')],
+      app: path.join(__dirname, 'src/client/index'),
       vendor: [
         'react',
         'react-dom',
@@ -61,9 +60,11 @@ exports = module.exports = [
       ]
     },
     output: {
-      path: path.join(__dirname, 'dist', 'public'),
+      path: path.join(__dirname, 'dist', 'client'),
+      publicPath: '/assets/',
       filename: '[name].js'
     },
+    devtool: false,
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
@@ -84,14 +85,8 @@ exports = module.exports = [
       loaders: [
         {
           test: /\.js$/,
-          loaders: ['babel']
-        },
-        { 
-          test: /\.ico$/,
-          loader: 'file',
-          query: {
-            name: '[name].[ext]'
-          }
+          exclude: /node_modules/,
+          loader: 'babel'
         }
       ]
     }
