@@ -1,9 +1,9 @@
 app:
   build: .
+  command: npm run start-dev
   volumes:
     - .:/usr/src/app
     - /usr/src/app/node_modules
-  command: npm run start-dev
   ports:
     - 3000
   environment:

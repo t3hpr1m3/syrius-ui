@@ -8,18 +8,11 @@
   "devDependencies": {
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
+    "babel-polyfill": "^6.20.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "file-loader": "^0.9.0",
-    "nodemon": "^1.11.0",
-    "webpack": "^1.14.0",
-    "webpack-dev-middleware": "^1.9.0"
-  },
-  "scripts": {
-    "watch": "webpack -d --watch",
-    "build": "webpack -d",
-    "start-dev": "nodemon -e js --ignore dist/ --exec npm start",
-    "start": "node bin/www.js"
+    "webpack": "^1.14.0"
   },
   "dependencies": {
     "config": "^1.24.0",
@@ -28,5 +21,11 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-router": "^3.0.0"
+  },
+  "scripts": {
+    "build-dev": "NODE_ENV=development webpack",
+    "build": "webpack -p",
+    "start-dev": "NODE_ENV=development node bin/www-dev.js",
+    "start": "node bin/www.js"
   }
 }

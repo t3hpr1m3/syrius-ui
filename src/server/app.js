@@ -6,24 +6,14 @@ import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import routes from './routes'
-import webpack from 'webpack'
-import webpackMiddleware from 'webpack-dev-middleware'
-import webpackConfig from '../webpack.config'
+import routes from '../routes'
 
 export const app = express()
 
-app.set('views', path.join(__dirname, './views'))
+app.set('views', path.resolve(__dirname, '../views'))
 app.set('view engine', 'pug')
 
-if (config.get('env') === 'development') {
-
-  const compiler = webpack(webpackConfig)
-  app.use(webpackMiddleware(compiler, {
-    publicPath: webpackConfig.output.publicPath,
-    stats: { colors: true }
-  }))
-}
+app.use('/assets', express.static(path.resolve(__dirname, '../../dist/public')))
 
 app.get('*', (req, res) => {
   match(
