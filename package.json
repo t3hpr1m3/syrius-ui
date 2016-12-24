@@ -23,9 +23,7 @@
     "react-router": "^3.0.0"
   },
   "scripts": {
-    "build-dev": "NODE_ENV=development webpack",
-    "build": "webpack -p",
-    "start-dev": "NODE_ENV=development node bin/www-dev.js",
+    "build": "webpack",
     "start": "node bin/www.js"
   }
 }

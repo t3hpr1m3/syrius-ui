@@ -64,6 +64,14 @@ var config = [
       path: path.join(__dirname, 'dist', 'public'),
       filename: '[name].js'
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': JSON.stringify('production')
+        }
+      }),
+      new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
+    ],
     module: {
       loaders: [
         {

@@ -70,6 +70,14 @@ exports = module.exports = [
           'NODE_ENV': JSON.stringify('production')
         }
       }),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          screw_ie8: true
+        },
+        comments: false,
+        sourceMap: false
+      }),
       new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
     ],
     module: {

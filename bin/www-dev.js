@@ -7,8 +7,12 @@ var config = require('config'),
 function watchServerChanges() {
   var httpServerObject = null;
   var compiler = webpack(require('../webpack.config'));
+  var compilerOptions = {
+    aggregateTimeout: 300,
+    poll: true
+  };
 
-  compiler.watch({}, function onServerChange(err, stats) {
+  compiler.watch(compilerOptions, function onServerChange(err, stats) {
     if (err) {
       console.log('Server bundling error: ', JSON.stringify(err));
       return;
@@ -18,7 +22,6 @@ function watchServerChanges() {
 
     if (httpServerObject === null) {
       httpServerObject = initHttpServer();
-      console.log('Server bundling complete');
     } else {
       httpServerObject.httpServer.close(function() {
         httpServerObject = initHttpServer();
