@@ -1,26 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { IndexLink, Link } from 'react-router';
-
-class NavItem extends Component {
-  render() {
-    return (
-      <Link {...this.props} activeClassName='active' />
-    )
-  }
-}
-
-class NavBar extends Component {
-  render() {
-    return (
-      <ul>
-        <li><NavItem to='/' onlyActiveOnIndex>Home</NavItem></li>
-        <li><NavItem to='/about'>About</NavItem></li>
-      </ul>
-    )
-  }
-}
+import NavBar from '../components/NavBar'
 
 export default class App extends Component {
   render() {
