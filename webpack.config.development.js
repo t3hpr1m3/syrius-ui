@@ -64,6 +64,7 @@ var config = [
       path: path.join(__dirname, 'dist', 'public'),
       filename: '[name].js'
     },
+    devtool: '#cheap-module-source-map',
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
