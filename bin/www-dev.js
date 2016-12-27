@@ -5,27 +5,25 @@ var config = require('config'),
     serverConfig = require('../webpack/server'),
     webpack = require('webpack');
 
-var serverDistPath = path.join(serverConfig.output.path, serverConfig.output.filename);
-
 // Shamelessly borrowed from http://www.reactjunkie.com/universal-hot-reload/
-function watchServerChanges() {
+function watchServerChanges(serverPath) {
   var httpServerObject = null;
   var compiler = webpack(serverConfig);
   var compilerOptions = {};
 
-  compiler.watch(compilerOptions, function onServerChange(err, stats) {
+  return compiler.watch(compilerOptions, function onServerChange(err, stats) {
     if (err) {
       console.log('Server bundling error: ', JSON.stringify(err));
       return;
     }
 
-    clearCache();
+    clearCache(serverPath);
 
     if (httpServerObject === null) {
-      httpServerObject = initHttpServer();
+      httpServerObject = initHttpServer(serverPath);
     } else {
       httpServerObject.httpServer.close(function() {
-        httpServerObject = initHttpServer();
+        httpServerObject = initHttpServer(serverPath);
         console.log('Server restarted ' + new Date());
       });
 
@@ -37,18 +35,23 @@ function watchServerChanges() {
   });
 }
 
-function clearCache() {
+function clearCache(serverPath) {
   var cacheIds = Object.keys(require.cache);
   for (var i = 0; i < cacheIds.length; i++) {
-    if (cacheIds[i] === serverDistPath) {
+    if (cacheIds[i] === serverPath) {
       delete require.cache[cacheIds[i]];
       return;
     }
   }
 }
 
-function initHttpServer() {
-  var httpServer = require(serverDistPath).server;
+function initHttpServer(serverPath) {
+  try {
+    var httpServer = require(serverPath).server;
+  } catch (ex) {
+    console.log('an error occurred during reload: ', ex);
+    return null;
+  }
   var sockets = {};
 
   var nextSocketId = 0;
@@ -65,4 +68,6 @@ function initHttpServer() {
   return { httpServer: httpServer, sockets: sockets };
 }
 
-watchServerChanges();
+exports = module.exports = function(serverDistPath) {
+  return watchServerChanges(serverDistPath);
+};

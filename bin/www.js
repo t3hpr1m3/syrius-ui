@@ -9,7 +9,7 @@ console.log('Syrius starting in ' + config.get('env') + ' mode');
 var serverPath = path.join(serverConfig.output.path, serverConfig.output.filename);
 
 if (config.get('env') === 'development') {
-  serverPath = './www-dev';
+  require('./www-dev')(serverPath);
+} else {
+  require(serverPath);
 }
-
-require(serverPath);
